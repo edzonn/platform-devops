@@ -1,0 +1,42 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "s3:ListBucket",
+                "s3:GetReplicationConfiguration",
+                "s3:GetObjectVersionForReplication",
+                "s3:GetObjectVersionAcl",
+                "s3:GetObjectVersionTagging",
+                "s3:GetObjectRetention",
+                "s3:GetObjectLegalHold"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::replication-test-0112",
+                "arn:aws:s3:::replication-test-0112/*",
+                "arn:aws:s3:::same-account-replication-001",
+                "arn:aws:s3:::test-01-bucket-replication-0001",
+                "arn:aws:s3:::test-123456-01",
+                "arn:aws:s3:::same-account-replication-001/*",
+                "arn:aws:s3:::test-01-bucket-replication-0001/*",
+                "arn:aws:s3:::test-123456-01/*"
+            ]
+        },
+        {
+            "Action": [
+                "s3:ReplicateObject",
+                "s3:ReplicateDelete",
+                "s3:ReplicateTags",
+                "s3:ObjectOwnerOverrideToBucketOwner"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "arn:aws:s3:::replication-test-0112/*",
+                "arn:aws:s3:::same-account-replication-001/*",
+                "arn:aws:s3:::test-01-bucket-replication-0001/*",
+                "arn:aws:s3:::test-123456-01/*"
+            ]
+        }
+    ]
+}
