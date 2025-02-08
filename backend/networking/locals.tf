@@ -7,7 +7,5 @@ locals {
 
   tags = {
     Name        = local.name
-    # PlatformPOC = "terraform-aws-vpc"
-    # PlatformORG = "platform"
   }
 }
