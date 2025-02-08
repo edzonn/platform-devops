@@ -35,12 +35,12 @@ jobs:
           terraform init
           terraform validate
           terraform fmt -check
-        working-directory: backend/eks_cluster/config
+        working-directory: backend/eks_cluster/config  # Direct path, no $WORKING_DIR
 
       - name: Terraform Plan
         run: terraform plan -var-file=terraform.tfvars
-        working-directory: backend/eks_cluster/config
+        working-directory: backend/eks_cluster/config  # Direct path, no $WORKING_DIR
 
       - name: Terraform Apply
-        run: terraform plan -var-file=terraform.tfvars -auto-approve
-        working-directory: backend/eks_cluster/config
+        run: terraform apply -var-file=terraform.tfvars -auto-approve
+        working-directory: backend/eks_cluster/config  # Direct path, no $WORKING_DIR
