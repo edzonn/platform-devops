@@ -1,0 +1,46 @@
+name: Terraform
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed  # Triggers only when a PR is merged
+
+jobs:
+  terraform:
+    name: Terraform
+    runs-on: ubuntu-latest
+
+    if: github.event.pull_request.merged == true  # Ensures only merged PRs trigger the job
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Mark repository as safe for Git
+        run: git config --global --add safe.directory "$(pwd)"
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Init & Validate
+        run: |
+          terraform init
+          terraform validate
+          terraform fmt -check
+        working-directory: backend/eks_cluster/config
+
+      - name: Terraform Plan
+        run: terraform plan -var-file=terraform.tfvars
+        working-directory: backend/eks_cluster/config
+
+      - name: Terraform Apply
+        run: terraform plan -var-file=terraform.tfvars -auto-approve
+        working-directory: backend/eks_cluster/config
