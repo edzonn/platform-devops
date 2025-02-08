@@ -1,4 +1,4 @@
-name: Terraform Network
+name: Terraform networking
 
 on:
   pull_request:
@@ -10,9 +10,9 @@ on:
     branches:
       - main
     paths:
-      - 'backend/network/**/*.tf'  # Detects Terraform configuration file changes
-      - 'backend/network/**/*.tfvars'  # Detects variable file changes
-      - 'backend/network/terraform.lock.hcl'  # Detects lock file updates
+      - 'backend/networking/**/*.tf'  # Detects Terraform configuration file changes
+      - 'backend/networking/**/*.tfvars'  # Detects variable file changes
+      - 'backend/networking/terraform.lock.hcl'  # Detects lock file updates
 
 jobs:
   terraform:
@@ -27,6 +27,25 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Enable Debug Mode
+        run: |
+          echo "GITHUB_DEBUG=${{ runner.debug }}" >> $GITHUB_ENV
+          echo "Enabling debug logs..."
+          export TF_LOG=DEBUG
+          export TF_LOG_PATH=terraform-debug.log
+          echo "Terraform debug logging enabled"
+
+      - name: Display Environment Variables (Debugging)
+        run: env | sort
+
+      - name: Show Current Directory and Files (Debugging)
+        run: |
+          echo "Current working directory: $(pwd)"
+          echo "Listing directory contents..."
+          ls -la
+          echo "Listing backend/networking directory..."
+          ls -la backend/networking/
 
       - name: Mark repository as safe for Git
         run: git config --global --add safe.directory "$(pwd)"
@@ -49,3 +68,9 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -var-file=terraform.tfvars -auto-approve
         working-directory: backend/networking/
+
+      - name: Show Terraform Debug Logs (If Available)
+        if: always()
+        run: |
+          echo "Showing Terraform debug logs..."
+          cat terraform-debug.log || echo "No debug log found."
