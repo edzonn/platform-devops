@@ -2,7 +2,7 @@
 module "eks" {
   source          = "terraform-aws-modules/eks/aws"
   version         = "19.13.1"
-  cluster_name    = var.cluster_name
+  cluster_name    = "${var.cluster_name}-${var.test_name}"
   cluster_version = var.cluster_version
   iam_role_name   = "eks-node-group-role"
 

@@ -42,3 +42,7 @@ variable "ami_type" {
   description = "The AMI type of the EKS cluster"
   type        = string
 }
+
+variable "test_name" {
+  type = string
+}
