@@ -1,6 +1,6 @@
 aws_region      = "ap-southeast-1"
 cluster_version = "1.30"
-cluster_name    = "platform-eks-cluster"
+cluster_name    = "platform-eks"
 platform_name   = "platform"
 platform_poc    = "platform-eks-cluster"
 backend_bucket  = "platform-terraform-state-201"
@@ -9,3 +9,5 @@ region          = "ap-southeast-1"
 instance_type   = "m5.large"
 ami_type        = "AL2023_x86_64_STANDARD"
 # ami_type        = "AL2_x86_64"
+test_name = "test-edz"
+

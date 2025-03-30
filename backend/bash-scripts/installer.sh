@@ -58,5 +58,16 @@ else
     echo "Git installed: $(git --version)"
 fi
 
+# Install Kubectl if not installed
+if is_installed kubectl; then
+    echo "Kubectl is already installed: $(kubectl version --client --short)"
+else
+    echo "Installing Kubectl..."
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    chmod +x kubectl
+    sudo mv kubectl /usr/local/bin/
+    echo "Kubectl installed: $(kubectl version --client --short)"
+fi
+
 echo "Installation process complete!"
 

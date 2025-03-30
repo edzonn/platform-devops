@@ -1,0 +1,5 @@
+platform_poc    = "platform-eks-cluster"
+backend_bucket  = "platform-terraform-state-201"
+key_state       = "networking/terraform.state"
+aws_region          = "ap-southeast-1"
+ami_id         = "ami-0c1907b6d738188e5"
