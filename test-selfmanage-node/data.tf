@@ -18,3 +18,10 @@ data "aws_ami" "amazon_eks" {
 data "aws_eks_cluster_auth" "cluster" {
   name = aws_eks_cluster.eks_cluster.name
 }
+
+data "aws_ebs_default_kms_key" "current" {}
+
+data "aws_kms_alias" "ebs" {
+  name = "alias/aws/ebs"
+}
+ 

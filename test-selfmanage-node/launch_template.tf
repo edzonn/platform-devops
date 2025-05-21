@@ -19,18 +19,36 @@ resource "aws_launch_template" "eks_nodes" {
     create_before_destroy = true
   }
 
+  block_device_mappings {
+    device_name = "/dev/xvda"
+    ebs {
+      volume_size = 10
+      volume_type = "gp2"
+      delete_on_termination = true
+      encrypted = true
+      kms_key_id = data.aws_kms_alias.ebs.target_key_arn
+    }
+  }
+
   tag_specifications {
     resource_type = "instance"
     tags = {
       Name = "${var.cluster_name}-node"
     }
   }
+
+  tag_specifications {
+    resource_type = "volume"
+    tags = {
+      Name = "${var.cluster_name}-node-volume"
+    }
+  }
 }
 
 resource "aws_autoscaling_group" "eks_nodes" {
   name                = "${var.cluster_name}-nodes"
-  desired_capacity    = 2
-  max_size            = 2
+  desired_capacity    = 1
+  max_size            = 1
   min_size            = 1
   target_group_arns   = []
   vpc_zone_identifier = aws_subnet.eks_subnets[*].id
@@ -39,8 +57,8 @@ resource "aws_autoscaling_group" "eks_nodes" {
     id      = aws_launch_template.eks_nodes.id
     version = "$Latest"
   }
-  termination_policies = ["OldestInstance"]
-  wait_for_capacity_timeout = "0"
+  termination_policies = ["OldestInstance","OldestLaunchTemplate"]
+  wait_for_capacity_timeout = "1m"
 
   lifecycle {
     create_before_destroy = true
