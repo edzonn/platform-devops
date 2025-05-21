@@ -1,0 +1,96 @@
+Daily Task Checklist for Assigned Tickets (DevOps Engineer)
+✅ 1. Start of Day – Ticket Review (9:00 AM - 9:30 AM)
+	• Check assigned tickets in Jira (or your ticketing system).
+	• Prioritize by severity, SLA, and business impact.
+	• Acknowledge new tickets in the system (leave a comment confirming you're reviewing it).
+	• Check for dependencies (infra, team input, approvals, change windows).
+
+📋 2. Ticket Triage and Planning (9:30 AM - 10:30 AM)
+	• Break down ticket into subtasks or steps if complex.
+	• Evaluate what tools/scripts/environments are required.
+	• Update the ticket with ETA and plan of action.
+	• Notify stakeholders if ticket involves downtime or risk.
+
+🧑‍💻 3. Ticket Execution (10:30 AM - 1:00 PM)
+	• Begin working on ticket in non-production environments first.
+	• Validate logs, configs, metrics if debugging is required.
+	• Apply fix or change as needed (in line with IaC/automation best practices).
+	• Perform unit tests / smoke tests before pushing changes.
+
+☕ Break / Standups (1:00 PM - 2:00 PM)
+(Join team stand-up if scheduled and provide ticket update)
+
+🚀 4. Implementation & Deployment (2:00 PM - 4:00 PM)
+	• If applicable, prepare Change Request (CR).
+	• Schedule deployment in accordance with change policy.
+	• Apply fix/change to staging and then to production.
+	• Monitor system for anomalies post-change using APM/logs/dashboards.
+	• Confirm with stakeholders that the issue is resolved.
+
+🧾 5. Update and Close Tickets (4:00 PM - 5:00 PM)
+	• Add detailed notes to the ticket (what was done, where, when).
+	• Attach logs/screenshots if needed.
+	• Mark the ticket as resolved or completed.
+	• Send final update to requester or assigned team.
+
+📈 6. End-of-Day Wrap-Up
+	• Log time spent per ticket.
+	• Review if any ticket needs to be escalated or rolled over to tomorrow.
+	• Document any lessons learned or automation ideas.
+	• Update backlog or sprint board if required.
+
+Would you like a Notion template, spreadsheet, or automated checklist (e.g., via Slack/Teams) for this flow?
+
+4o
+You said:
+how about without tickets received
+
+ChatGPT said:
+Great follow-up! When no tickets are received, a DevOps Engineer can focus on proactive, value-driven tasks to improve system reliability, automation, observability, and team efficiency.
+Here's a daily task checklist for a DevOps Engineer when no tickets are assigned:
+
+🧘 Daily Task Checklist (No Tickets Assigned)
+✅ 1. Morning System Health Check (9:00 AM - 9:45 AM)
+	• Review monitoring dashboards (CPU, memory, disk, error rates).
+	• Check CI/CD pipeline health (failed jobs, build times).
+	• Scan Datadog/RUM/APM for anomalies or new trends.
+	• Review recent alerts and logs to identify potential issues.
+
+🧹 2. Housekeeping and Cleanup (9:45 AM - 10:30 AM)
+	• Clean up unused infrastructure (old EC2, volumes, images).
+	• Reclaim orphaned resources (e.g., Kubernetes pods, EBS volumes).
+	• Rotate SSH keys/secrets or check for expiring certs.
+	• Archive old logs or reduce retention where needed.
+
+🛠️ 3. Automation and Tooling Improvements (10:30 AM - 12:30 PM)
+	• Improve existing Terraform/CloudFormation templates.
+	• Refactor CI/CD pipelines (optimize, add caching, etc.).
+	• Build or refine monitoring/alerting rules in Datadog or Prometheus.
+	• Automate common manual tasks (e.g., restart services, clean disk space).
+
+☕ Lunch / Standup (12:30 PM - 1:30 PM)
+(Join team meeting and offer to support ongoing initiatives.)
+
+📚 4. Learning & Documentation (1:30 PM - 3:00 PM)
+	• Read up on latest in AWS, Kubernetes, or tools you use.
+	• Document internal processes or architecture diagrams.
+	• Update Runbooks and incident response guides.
+	• Watch a course or complete a lab (e.g., AWS Skill Builder, KodeKloud, etc.).
+
+🧪 5. Experiment / R&D (3:00 PM - 4:00 PM)
+	• Test a new feature or tool in a sandbox environment.
+	• Benchmark performance of a new deployment strategy or tool.
+	• Prototype infra cost optimization ideas (e.g., Savings Plans, Spot Instances).
+
+📈 6. Wrap-Up and Planning (4:00 PM - 5:00 PM)
+	• Summarize accomplishments in internal DevOps log or Slack.
+	• Plan improvements or tasks for tomorrow.
+	• Offer to pair up with devs or QA for cross-team work.
+	• Check once more for new ticket assignments.
+
+Would you like this checklist exported as:
+	• A Markdown doc
+	• A Notion task board
+	• A Google Sheet or Excel template
+	• Or automated as a daily Slack message/reminder?
+
