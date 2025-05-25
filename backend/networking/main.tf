@@ -50,92 +50,92 @@ module "vpc" {
 
 # VPC Endpoints Module
 
-module "vpc_endpoints" {
-  source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+# module "vpc_endpoints" {
+#   source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
 
-  vpc_id = module.vpc.vpc_id
+#   vpc_id = module.vpc.vpc_id
 
-  create_security_group      = true
-  security_group_name_prefix = "${local.name}-vpc-endpoints"
-  security_group_description = "VPC endpoint security group"
-  security_group_rules = {
-    ingress_https = {
-      description = "HTTPS from VPC"
-      cidr_blocks = [module.vpc.vpc_cidr_block]
-    }
-  }
+#   create_security_group      = true
+#   security_group_name_prefix = "${local.name}-vpc-endpoints"
+#   security_group_description = "VPC endpoint security group"
+#   security_group_rules = {
+#     ingress_https = {
+#       description = "HTTPS from VPC"
+#       cidr_blocks = [module.vpc.vpc_cidr_block]
+#     }
+#   }
 
-  endpoints = {
-    s3 = {
-      service             = "s3"
-      private_dns_enabled = true
-      dns_options = {
-        private_dns_only_for_inbound_resolver_endpoint = false
-      }
-      tags = { Name = "platform-s3-vpc-endpoint" }
-    },
-    ecs = {
-      service             = "ecs"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      tags = { Name = "platform-ecs-vpc-endpoint" }      
+#   endpoints = {
+#     s3 = {
+#       service             = "s3"
+#       private_dns_enabled = true
+#       dns_options = {
+#         private_dns_only_for_inbound_resolver_endpoint = false
+#       }
+#       tags = { Name = "platform-s3-vpc-endpoint" }
+#     },
+#     ecs = {
+#       service             = "ecs"
+#       private_dns_enabled = true
+#       subnet_ids          = module.vpc.private_subnets
+#       tags = { Name = "platform-ecs-vpc-endpoint" }      
 
-    },
-    ecs_telemetry = {
-      create              = false
-      service             = "ecs-telemetry"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      tags = { Name = "platform-ecs-tele-vpc-endpoint" }
-    },
-    ecr_api = {
-      service             = "ecr.api"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
-      tags = { Name = "platform-ecr-api-vpc-endpoint" }
-    },
-    ecr_dkr = {
-      service             = "ecr.dkr"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
-      tags = { Name = "platform-ecr-dkr-vpc-endpoint" }
-    },
-    rds = {
-      service             = "rds"
-      private_dns_enabled = true
-      subnet_ids          = module.vpc.private_subnets
-      security_group_ids  = [aws_security_group.rds.id]
-      tags = { Name = "platform-rds-vpc-endpoint" }
-    },
-  }
+#     },
+#     ecs_telemetry = {
+#       create              = false
+#       service             = "ecs-telemetry"
+#       private_dns_enabled = true
+#       subnet_ids          = module.vpc.private_subnets
+#       tags = { Name = "platform-ecs-tele-vpc-endpoint" }
+#     },
+#     ecr_api = {
+#       service             = "ecr.api"
+#       private_dns_enabled = true
+#       subnet_ids          = module.vpc.private_subnets
+#       policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
+#       tags = { Name = "platform-ecr-api-vpc-endpoint" }
+#     },
+#     ecr_dkr = {
+#       service             = "ecr.dkr"
+#       private_dns_enabled = true
+#       subnet_ids          = module.vpc.private_subnets
+#       policy              = data.aws_iam_policy_document.generic_endpoint_policy.json
+#       tags = { Name = "platform-ecr-dkr-vpc-endpoint" }
+#     },
+#     rds = {
+#       service             = "rds"
+#       private_dns_enabled = true
+#       subnet_ids          = module.vpc.private_subnets
+#       security_group_ids  = [aws_security_group.rds.id]
+#       tags = { Name = "platform-rds-vpc-endpoint" }
+#     },
+#   }
 
-  tags = merge(local.tags, {
-    Endpoint = "true",
-    Name = "${local.name}-vpc-endpoints-sec-group"
-  })
+#   tags = merge(local.tags, {
+#     Endpoint = "true",
+#     Name = "${local.name}-vpc-endpoints-sec-group"
+#   })
 
-}
+# }
 
-module "vpc_endpoints_nocreate" {
-  source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+# module "vpc_endpoints_nocreate" {
+#   source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
 
-  create = false
-}
+#   create = false
+# }
 
-resource "aws_security_group" "rds" {
-  name_prefix = "${local.name}-rds-"
-  description = "Allow PostgreSQL inbound traffic"
-  vpc_id      = module.vpc.vpc_id
+# resource "aws_security_group" "rds" {
+#   name_prefix = "${local.name}-rds-"
+#   description = "Allow PostgreSQL inbound traffic"
+#   vpc_id      = module.vpc.vpc_id
 
-  ingress {
-    description = "TLS from VPC"
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = [module.vpc.vpc_cidr_block]
-  }
+#   ingress {
+#     description = "TLS from VPC"
+#     from_port   = 5432
+#     to_port     = 5432
+#     protocol    = "tcp"
+#     cidr_blocks = [module.vpc.vpc_cidr_block]
+#   }
 
-  tags = { Name = "${local.name}-rds-sec-group" }
-}
+#   tags = { Name = "${local.name}-rds-sec-group" }
+# }
