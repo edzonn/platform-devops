@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bastion Host Access</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f2f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      background-color: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      max-width: 600px;
+    }
+
+    h1 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    p {
+      color: #555;
+    }
+
+    .button-list {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    @media (min-width: 500px) {
+      .button-list {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .ssh-button {
+      display: block;
+      padding: 14px 20px;
+      font-size: 16px;
+      color: white;
+      background-color: #2d89ef;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+
+    .ssh-button:hover {
+      background-color: #1b61c1;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Bastion Hosts</h1>
+    <p>Select a bastion to start your SSH session:</p>
+
+    <div class="button-list">
+      <a class="ssh-button" href="ssh://user@bastion1.example.com">Connect to Bastion 1</a>
+      <a class="ssh-button" href="ssh://user@bastion2.example.com">Connect to Bastion 2</a>
+      <a class="ssh-button" href="ssh://user@bastion3.example.com">Connect to Bastion 3</a>
+      <a class="ssh-button" href="ssh://user@bastion4.example.com">Connect to Bastion 4</a>
+    </div>
+
+    <footer>
+      All access is monitored. Use only if authorized.
+    </footer>
+  </div>
+</body>
+</html>

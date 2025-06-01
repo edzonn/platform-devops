@@ -14,3 +14,38 @@ resource "helm_release" "aws-load-balancer-controller" {
     value = aws_iam_role.aws-load-balancer-controller.arn
   }
 }
+
+resource "helm_release" "aws_ebs_csi_driver" {
+  name       = "aws-ebs-csi-driver"
+  namespace  = "kube-system"
+  repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
+  chart      = "aws-ebs-csi-driver"
+  version    = "2.30.0" 
+
+  # values = [
+  #   yamlencode({
+  #     storageClasses = [
+  #       {
+  #         name              = "ebs-sc"
+  #         volumeBindingMode = "WaitForFirstConsumer"
+  #         provisioner       = "ebs.csi.aws.com"
+  #       }
+  #     ]
+  #   })
+  # ]
+
+  set {
+    name  = "enableVolumeScheduling"
+    value = "true"
+  }
+
+  set {
+    name  = "enableVolumeResizing"
+    value = "true"
+  }
+
+  set {
+    name  = "enableVolumeSnapshot"
+    value = "true"
+  }
+}

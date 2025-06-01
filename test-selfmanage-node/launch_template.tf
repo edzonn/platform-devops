@@ -1,6 +1,6 @@
 resource "aws_launch_template" "eks_nodes" {
   name                   = "${var.cluster_name}-node-template"
-  instance_type          = "t3.micro"
+  instance_type          = "t3.medium"
   image_id               = data.aws_ssm_parameter.eks_ami.value
   vpc_security_group_ids = [aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id]
 
@@ -47,8 +47,8 @@ resource "aws_launch_template" "eks_nodes" {
 
 resource "aws_autoscaling_group" "eks_nodes" {
   name                = "${var.cluster_name}-nodes"
-  desired_capacity    = 1
-  max_size            = 1
+  desired_capacity    = 3
+  max_size            = 3
   min_size            = 1
   target_group_arns   = []
   vpc_zone_identifier = aws_subnet.eks_subnets[*].id

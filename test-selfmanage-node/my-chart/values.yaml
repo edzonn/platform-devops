@@ -1,0 +1,23 @@
+kubernetesClusterDomain: cluster.local
+mysql:
+  mysql:
+    env:
+      mysqlRootPassword: dbpassword11
+    image:
+      repository: mysql
+      tag: "5.6"
+  ports:
+  - port: 3306
+    targetPort: 0
+  replicas: 1
+  strategy:
+    type: Recreate
+  type: ClusterIP
+pvc:
+  ebsMysqlPvClaim:
+    storageClass: ebs-sc
+    storageRequest: 4Gi
+usermanagementDbcreationScript:
+  mysqlUsermgmtSql: |-
+    DROP DATABASE IF EXISTS usermgmt;
+    CREATE DATABASE usermgmt;

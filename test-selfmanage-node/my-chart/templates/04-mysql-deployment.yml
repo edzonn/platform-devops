@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "my-chart.fullname" . }}-mysql
+  labels:
+  {{- include "my-chart.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.mysql.replicas }}
+  strategy:
+    type: {{ .Values.mysql.strategy.type | quote }}
+  selector:
+    matchLabels:
+      app: mysql
+    {{- include "my-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: mysql
+      {{- include "my-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: {{ quote .Values.mysql.mysql.env.mysqlRootPassword }}
+        - name: KUBERNETES_CLUSTER_DOMAIN
+          value: {{ quote .Values.kubernetesClusterDomain }}
+        image: {{ .Values.mysql.mysql.image.repository }}:{{ .Values.mysql.mysql.image.tag
+          | default .Chart.AppVersion }}
+        name: mysql
+        ports:
+        - containerPort: 3306
+          name: mysql
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-persistent-storage
+        - mountPath: /docker-entrypoint-initdb.d
+          name: usermanagement-dbcreation-script
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: {{ include "my-chart.fullname" . }}-ebs-mysql-pv-claim
+      - configMap:
+          name: {{ include "my-chart.fullname" . }}-usermanagement-dbcreation-script
+        name: usermanagement-dbcreation-script
