@@ -22,7 +22,6 @@ resource "aws_subnet" "eks_subnets" {
   cidr_block              = var.subnet_cidrs[count.index]
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
-
   tags = {
     Name                        = "${var.cluster_name}-subnet-${count.index + 1}"
     "kubernetes.io/cluster/${var.cluster_name}" = "shared"

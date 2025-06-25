@@ -74,7 +74,9 @@ resource "aws_iam_policy" "ebs_csi_policy" {
           "ec2:DescribeSnapshots",
           "ec2:DescribeVolumes",
           "ec2:DetachVolume",
-          "ec2:ModifyVolume"
+          "ec2:ModifyVolume",
+          "ec2:CreateVolume",
+          "ec2:DeleteVolume",
         ]
         Resource = "*"
       }
