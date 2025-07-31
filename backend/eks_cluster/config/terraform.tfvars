@@ -1,5 +1,5 @@
 aws_region      = "ap-southeast-1"
-cluster_version = "1.30"
+cluster_version = 1.31
 cluster_name    = "platform-eks"
 platform_name   = "platform"
 platform_poc    = "platform-eks-cluster"

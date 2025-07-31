@@ -33,6 +33,11 @@ output "node_group_name" {
   value       = aws_autoscaling_group.eks_nodes.name
 }
 
+# output "cluster_service_cidr" {
+#   description = "CIDR block for EKS services"
+#   value       = aws_eks_cluster.eks.kubernetes_network_config[0].service_ipv4_cidr
+# }
+
 output "configure_kubectl" {
   description = "Command to configure kubectl"
   value       = "aws eks get-token --cluster-name ${aws_eks_cluster.eks_cluster.name} | kubectl apply -f -"

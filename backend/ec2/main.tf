@@ -33,7 +33,7 @@ resource "aws_instance" "platform-dev-test-ec2-01" {
 
   ebs_block_device {
     device_name = "/dev/sdh"
-    volume_size = 8
+    volume_size = 20
     volume_type = "gp2"
   }
 
@@ -46,7 +46,7 @@ resource "aws_instance" "platform-dev-test-ec2-01" {
 resource "aws_instance" "platform-dev-test-ec2-02" {
   count                  = 2
   ami                    = var.ami_id
-  instance_type          = "t3.micro"
+  instance_type          = "t3.medium"
   key_name               = "datadog-keypair"
   subnet_id              = data.terraform_remote_state.module_output.outputs.private_subnets[0]
   vpc_security_group_ids = [aws_security_group.platform-dev-test-sg.id]
@@ -61,7 +61,7 @@ resource "aws_instance" "platform-dev-test-ec2-02" {
   #  root volume size gp3
 
   root_block_device {
-    volume_size = 10
+    volume_size = 20
     volume_type = "gp3"
     iops        = 3000
     throughput  = 125
@@ -75,7 +75,7 @@ resource "aws_instance" "platform-dev-test-ec2-02" {
 
   ebs_block_device {
     device_name = "/dev/sdh"
-    volume_size = 10
+    volume_size = 20
     volume_type = "gp2"
   }
 

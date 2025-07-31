@@ -53,3 +53,38 @@ resource "aws_iam_role" "eks_node_role" {
     ]
   })
 }
+
+# create iam policy for ebs
+
+resource "aws_iam_policy" "ebs_csi_policy" {
+  name        = "${var.cluster_name}-ebs-csi-policy"
+  description = "EBS CSI policy for EKS nodes"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "ec2:AttachVolume",
+          "ec2:CreateSnapshot",
+          "ec2:CreateTags",
+          "ec2:DeleteSnapshot",
+          "ec2:DescribeInstances",
+          "ec2:DescribeSnapshots",
+          "ec2:DescribeVolumes",
+          "ec2:DetachVolume",
+          "ec2:ModifyVolume",
+          "ec2:CreateVolume",
+          "ec2:DeleteVolume",
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "ebs_csi_policy_attachment" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = aws_iam_policy.ebs_csi_policy.arn
+}

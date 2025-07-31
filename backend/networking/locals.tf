@@ -1,5 +1,5 @@
 locals {
-  name   = "platform-${basename(path.cwd)}"
+  name   = "platform-${basename(path.cwd)}-${terraform.workspace}"
   region = var.aws_region
 
   vpc_cidr = var.vpc_cidr_block
