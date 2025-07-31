@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-shell
+  namespace: default # Or your desired namespace
+spec:
+  selector:
+    matchLabels:
+      app: node-shell
+  template:
+    metadata:
+      labels:
+        app: node-shell
+    spec:
+      hostPID: true # Allows access to host's process namespace
+      hostIPC: true # Allows access to host's IPC namespace
+      hostNetwork: true # Allows access to host's network namespace
+      tolerations:
+      - operator: Exists # Tolerates all taints to run on all nodes
+      containers:
+      - name: node-shell-container
+        image: ubuntu:latest # Or any image with necessary tools (e.g., busybox, alpine)
+        securityContext:
+          privileged: true # Grants privileged access
+        volumeMounts:
+        - name: host-root
+          mountPath: /host # Mounts host's root filesystem
+        command: ["/bin/bash"]
+        args: ["-c", "chroot /host /bin/bash"] # Or use nsenter for more advanced access
+      volumes:
+      - name: host-root
+        hostPath:
+          path: /
+          type: Directory

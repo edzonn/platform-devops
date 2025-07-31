@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-shell
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: node-shell
+  template:
+    metadata:
+      labels:
+        app: node-shell
+    spec:
+      hostPID: true
+      hostIPC: true
+      hostNetwork: true
+      tolerations:
+      - operator: Exists
+      containers:
+      - name: node-shell-container
+        image: nicolaka/netshoot:latest
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: host-root
+          mountPath: /host
+        command: ["sleep"]
+        args: ["infinity"]
+      volumes:
+      - name: host-root
+        hostPath:
+          path: /
+          type: Directory
+      terminationGracePeriodSeconds: 30
+

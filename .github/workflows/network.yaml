@@ -1,0 +1,60 @@
+name: Test CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["platform-devops/**"]
+
+  pull_request:
+    branches: [main]
+    paths: ["platform-devops/**"]
+
+jobs:
+  plan:
+    name: Terraform plan
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+      - name: Initialise project and view terraform plan
+        run: |
+          cd platform-devops/backend/ 
+          cd networking
+          terraform fmt
+          terraform init -backend-config=config/config.conf
+          terraform plan -var=config/terraform.tfvars
+
+  deploy:
+    name: Terraform Deploy
+    needs: plan
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 14.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-2
+      - name: Initialise project and deploy terraform
+        run: |
+          cd platform-devops/backend/ 
+          cd networking
+          terraform fmt
+          terraform init -backend-config=config/config.conf
+          terraform plan -var=config/terraform.tfvars

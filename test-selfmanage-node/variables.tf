@@ -21,3 +21,25 @@ variable "subnet_cidrs" {
   type        = list(string)
   default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
+
+# variable "cluster_endpoint" {
+#   description = "EKS Cluster API endpoint"
+#   type        = string
+# }
+
+# variable "cluster_auth_base64" {
+#   description = "Base64 encoded EKS certificate authority data"
+#   type        = string
+# }
+
+# variable "cluster_service_cidr" {
+#   description = "EKS Service CIDR block"
+#   type        = string
+# }
+
+# variable "private_subnet_cidrs" {
+#   description = "CIDR blocks for private subnets"
+#   type        = list(string)
+#   default     = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
+# }
+
