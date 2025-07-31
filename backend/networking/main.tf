@@ -24,7 +24,7 @@ module "vpc" {
   public_subnet_names   = [for index, name in var.public_subnet_names : "${local.name}-${name}"]
 
   create_database_subnet_group  = true
-  manage_default_network_acl    = false
+  manage_default_network_acl    = true
   manage_default_route_table    = false
   manage_default_security_group = false
 
@@ -45,6 +45,7 @@ module "vpc" {
   }
     
   tags = var.tags
+  
 
 }
 
