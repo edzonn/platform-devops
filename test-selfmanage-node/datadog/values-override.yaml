@@ -1,0 +1,208 @@
+# Datadog Agent Values for AWS EKS
+# Replace <DATADOG_API_KEY> with your actual API key
+
+datadog:
+  # Required: Set your Datadog API Key
+  apiKey: "388620dd3f2d2562d55e0825e1d3e336"
+  
+  # Optional: Set your Datadog APP Key for additional features
+  # appKey: "<DATADOG_APP_KEY>"
+  
+  # Set the Datadog site (defaults to datadoghq.com)
+  # For EU: datadoghq.eu, for US3: us3.datadoghq.com, etc.
+  site: us5.datadoghq.com
+  
+  # Cluster name - Important for identifying your EKS cluster
+  clusterName: "my-eks-cluster"
+  
+  # Enable logs collection
+  logs:
+    enabled: true
+    containerCollectAll: true
+    containerCollectUsingFiles: true
+    containerCollectUsingFilesConfig: {}
+    containerCollectAllExtra:
+      - type: exclude_at_match
+        name: exclude_info_level
+        pattern: "(^INFO|\\bINFO\\b)"
+  
+  # Enable APM (Application Performance Monitoring)
+  apm:
+    enabled: true
+    portEnabled: true
+    port: 8126
+  
+  # Enable process monitoring
+  processAgent:
+    enabled: true
+    processCollection: true
+  
+  # Enable network performance monitoring
+  networkMonitoring:
+    enabled: true
+  
+  # Enable security agent for Cloud Workload Security
+  securityAgent:
+    compliance:
+      enabled: true
+    runtime:
+      enabled: true
+      syscallMonitor:
+        enabled: true
+  
+  # Kubernetes specific configurations
+  kubelet:
+    tlsVerify: false
+  
+  # Tags to apply to all metrics, events, and service checks
+  tags:
+    - "env:dev"
+    - "cloud:aws"
+    - "orchestrator:eks"
+  
+  # Enable Kubernetes event collection
+  kubeStateMetricsCore:
+    enabled: true
+  
+  # Enable orchestrator explorer
+  orchestratorExplorer:
+    enabled: true
+
+# Cluster Agent configuration
+clusterAgent:
+  enabled: true
+  replicas: 2
+  
+  # Enable metrics provider for HPA
+  metricsProvider:
+    enabled: true
+    useDatadogMetrics: true
+    createReaderRbac: true
+  
+  # Enable admission controller for APM and DogStatsD
+  admissionController:
+    enabled: true
+    mutateUnlabelled: true
+    configMode: "hostip"
+  
+  # Resource limits
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  
+  # Node selector for cluster agent
+  nodeSelector:
+    kubernetes.io/os: linux
+  
+  # Tolerations for cluster agent
+  tolerations: []
+
+# Node Agent (DaemonSet) configuration
+agents:
+  enabled: true
+  
+  # Use host network for better network visibility
+  useHostNetwork: true
+  
+  # Resource limits for node agents
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  
+  # Volume mounts for container runtime
+  # volumeMounts:
+  #   - name: dockersocket
+  #     mountPath: /var/run/docker.sock
+  #     readOnly: true
+  #   - name: procdir
+  #     mountPath: /host/proc
+  #     readOnly: true
+  #   - name: cgroups
+  #     mountPath: /host/sys/fs/cgroup
+  #     readOnly: true
+  
+  # volumes:
+  #   - name: dockersocket
+  #     hostPath:
+  #       path: /var/run/docker.sock
+  #   - name: procdir
+  #     hostPath:
+  #       path: /proc
+  #   - name: cgroups
+  #     hostPath:
+  #       path: /sys/fs/cgroup
+  
+  # Tolerations to run on all nodes including master
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+    - key: node-role.kubernetes.io/control-plane
+      effect: NoSchedule
+  
+  # Node selector
+  nodeSelector:
+    kubernetes.io/os: linux
+  
+  # Update strategy
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: "10%"
+
+# Cluster Checks Runner configuration
+clusterChecksRunner:
+  enabled: true
+  replicas: 2
+  
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  
+  nodeSelector:
+    kubernetes.io/os: linux
+
+# Kube State Metrics configuration
+kubeStateMetricsCore:
+  enabled: true
+
+# AWS specific configurations
+providers:
+  eks:
+    ec2:
+      useIMDSv2: true
+
+# Additional checksd configurations for AWS services
+# Uncomment and configure as needed
+# clusterAgent:
+#   confd:
+#     aws_rds.yaml: |-
+#       cluster_check: true
+#       init_config:
+#       instances:
+#         - dbinstanceidentifier: 'my-rds-instance'
+#           region: 'us-east-1'
+#           tags:
+#             - 'env:production'
+
+# Datadog Operator (if using Operator instead of Helm)
+# datadog-operator:
+#   enabled: false
+
+# Service Account annotations for IRSA (IAM Roles for Service Accounts)
+# Uncomment if using IRSA for AWS integration
+# clusterAgent:
+#   rbac:
+#     serviceAccountAnnotations:
+#       eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/DatadogIntegrationRole"
