@@ -104,22 +104,30 @@ echo "source <(kubectl completion bash)" >> ~/.bashrc
 - kubectl apply -f <ingress-definition-file>.yaml
 ```
 
-##  Kubernetes Cheat Sheet
-##  ========================
-##  A quick reference guide for common kubectl commands
-###  Usage:
-###    ***kubectl <command> [options]***   
-###  Examples:
+# Kubernetes Cheat Sheet
+A quick reference guide for common **kubectl** commands.
+
+---
+
+## Usage
+```bash
+kubectl <command> [options]
+```
+
+## Examples
 ```bash
 kubectl get pods
-kuubectl describe pod <pod-name>
+kubectl describe pod <pod-name>
 kubectl logs <pod-name>
 kubectl exec -it <pod-name> -- /bin/bash
 kubectl apply -f <file>.yaml
-ubectl delete pod <pod-name>
+kubectl delete pod <pod-name>
 ```
-##  For more information, visit: https://kubernetes.io/docs/reference/kubectl/       
-##  ========================
+
+---
+
+For more information, visit:  
+🔗 [Kubernetes Documentation](https://kubernetes.io/docs/reference/kubectl/)
 
 
 
