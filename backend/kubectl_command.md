@@ -110,14 +110,14 @@ echo "source <(kubectl completion bash)" >> ~/.bashrc
 ##  Usage:
 ##    kubectl <command> [options]
 ##  Examples:
-    ```bash
-        kubectl get pods
-        kuubectl describe pod <pod-name>
-        kubectl logs <pod-name>
-        kubectl exec -it <pod-name> -- /bin/bash
-        kubectl apply -f <file>.yaml
-        ubectl delete pod <pod-name>
-    ```
+```bash
+kubectl get pods
+kuubectl describe pod <pod-name>
+kubectl logs <pod-name>
+kubectl exec -it <pod-name> -- /bin/bash
+kubectl apply -f <file>.yaml
+ubectl delete pod <pod-name>
+```
 ##  For more information, visit: https://kubernetes.io/docs/reference/kubectl/       
 ##  ========================
 
