@@ -107,9 +107,9 @@ echo "source <(kubectl completion bash)" >> ~/.bashrc
 ##  Kubernetes Cheat Sheet
 ##  ========================
 ##  A quick reference guide for common kubectl commands
-##  Usage:
-##    kubectl <command> [options]
-##  Examples:
+###  Usage:
+###    ***kubectl <command> [options]***   
+###  Examples:
 ```bash
 kubectl get pods
 kuubectl describe pod <pod-name>
