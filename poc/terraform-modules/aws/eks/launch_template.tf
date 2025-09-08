@@ -41,11 +41,6 @@ resource "aws_launch_template" "nodes" {
     }
   }
 
-  vpc_security_group_ids = concat(
-  [aws_security_group.eks_nodes.id],
-  var.additional_security_group_ids
-)
-
   tag_specifications {
     resource_type = "instance"
     tags = merge(var.tags, { Name = "${var.cluster_name}-node", VPC = var.vpc_id })

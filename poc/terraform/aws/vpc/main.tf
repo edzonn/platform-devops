@@ -1,5 +1,5 @@
 module "vpc" {
-  source                     = "../../terraform-modules/aws/vpc"
+  source                     = "../../../terraform-modules/aws/vpc"
   name                       = "poc"
   region                     = var.region
   cluster_name               = "poc-cluster"
@@ -22,7 +22,7 @@ module "vpc" {
 }
 
 module "endpoints" {
-  source       = "../../terraform-modules/aws/vpc_endpoints"
+  source       = "../../../terraform-modules/aws/vpc_endpoints"
   name         = "poc"
   region       = var.region
   vpc_id       = module.vpc.vpc_id
