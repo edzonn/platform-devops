@@ -44,22 +44,7 @@ resource "aws_lb_target_group" "nlb_to_alb" {
   target_type = "ip"
 }
 
-# Fetch ALB private IPs dynamically
-# data "aws_network_interface" "alb_eni" {
-#   for_each = toset(aws_lb.internal_alb.subnets)
-#   filter {
-#     name   = "subnet-id"
-#     values = [each.value]
-#   }
-# }
-
 # Register ALB node IPs as NLB targets
-# resource "aws_lb_target_group_attachment" "nlb_to_alb_attachment" {
-#   for_each         = data.aws_network_interface.alb_eni
-#   target_group_arn = aws_lb_target_group.nlb_to_alb.arn
-#   target_id        = each.value.private_ip
-#   port             = 80
-# }
 
 resource "aws_lb_target_group_attachment" "nlb_to_alb_attachment" {
   count            = length(data.aws_network_interface.alb_eni)
