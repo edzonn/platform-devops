@@ -33,6 +33,11 @@ resource "aws_iam_role_policy_attachment" "ecr_readonly" {
   policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
+resource "aws_iam_role_policy_attachment" "autoscaling" {
+  role       = aws_iam_role.node.name
+  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
 # Optional: EBS CSI (basic EC2 permissions for self-managed nodes)
 resource "aws_iam_policy" "ebs_csi" {
   name        = "${var.cluster_name}-ebs-csi-policy"

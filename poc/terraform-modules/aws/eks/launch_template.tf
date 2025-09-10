@@ -4,7 +4,7 @@ resource "aws_launch_template" "nodes" {
   instance_type = var.instance_type
   image_id      = data.aws_ssm_parameter.eks_ami.value
 
-  vpc_security_group_ids = [aws_eks_cluster.this.vpc_config[0].cluster_security_group_id]
+  # vpc_security_group_ids = [aws_security_group.poc[*].id]
 
   user_data = base64encode(<<-EOF
     MIME-Version: 1.0

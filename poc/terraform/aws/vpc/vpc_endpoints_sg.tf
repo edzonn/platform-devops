@@ -22,5 +22,5 @@ resource "aws_security_group" "vpc_endpoints" {
     Name = "poc-vpc-endpoints-sg"
   }
 
-  depends_on = [ module.vpc ]
+  depends_on = [module.vpc]
 }

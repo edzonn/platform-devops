@@ -52,10 +52,10 @@ resource "aws_security_group" "example" {
     for_each = var.egress_rules
     content {
       from_port   = egress.value.from_port
-      to_port     = egress.value.to_port
-      protocol    = egress.value.protocol
+      to_port                                                                                                                 `    = egress.value.to_port                                                                                                                             
+      ]KOP,CXF                                                                                                                `\                                                                                                                                                                                                                                                                                                                                                                                                  
       cidr_blocks   = try(egress.value.cidr_blocks, null)
       security_groups = try(egress.value.security_groups, null)
     }
-  }
+  }     DF
 }

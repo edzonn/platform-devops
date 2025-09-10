@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "vpc_logs" {
-  bucket = "poc-vpc-flow-logs-${var.region}-${data.aws_caller_identity.current.account_id}"
+  bucket        = "poc-vpc-flow-logs-${var.region}-${data.aws_caller_identity.current.account_id}"
   force_destroy = true
 
   tags = {

@@ -35,3 +35,11 @@ data "aws_iam_policy_document" "alb_assume" {
     }
   }
 }
+
+data "terraform_remote_state" "vpc" {
+  backend = "local"
+
+  config = {
+    path = "/home/adiezon/scripts/poc/terraform/aws/vpc/terraform.tfstate"
+  }
+}

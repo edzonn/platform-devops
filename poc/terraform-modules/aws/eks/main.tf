@@ -15,9 +15,14 @@ resource "aws_eks_cluster" "this" {
   name     = var.cluster_name
   role_arn = aws_iam_role.eks_cluster_role.arn
   version  = var.cluster_version
+  
 
   vpc_config {
+    endpoint_public_access = false
+    endpoint_private_access = true
     subnet_ids = var.subnet_ids
+    security_group_ids = var.additional_security_group_ids
+
   }
 
   tags = merge(var.tags, { VPC = var.vpc_id })
@@ -45,25 +50,25 @@ resource "aws_iam_instance_profile" "node" {
   tags = var.tags
 }
 
-# Optional: aws-auth ConfigMap (requires kubernetes provider to be configured in the ROOT module)
-resource "kubernetes_config_map" "aws_auth" {
-  count = var.create_aws_auth ? 1 : 0
+# # Optional: aws-auth ConfigMap (requires kubernetes provider to be configured in the ROOT module)
+# resource "kubernetes_config_map" "aws_auth" {
+#   count = var.create_aws_auth ? 1 : 0
 
-  metadata { 
-    name = "aws-auth" 
-    namespace = "kube-system" 
-    }
+#   metadata { 
+#     name = "aws-auth" 
+#     namespace = "kube-system" 
+#     }
 
-  data = {
-    mapRoles = yamlencode(concat([
-      {
-        rolearn  = aws_iam_role.node.arn,
-        username = "system:node:{{EC2PrivateDNSName}}",
-        groups   = ["system:bootstrappers", "system:nodes"]
-      }
-    ], var.additional_map_roles))
-  }
+#   data = {
+#     mapRoles = yamlencode(concat([
+#       {
+#         rolearn  = aws_iam_role.node.arn,
+#         username = "system:node:{{EC2PrivateDNSName}}",
+#         groups   = ["system:bootstrappers", "system:nodes"]
+#       }
+#     ], var.additional_map_roles))
+#   }
 
-  depends_on = [aws_eks_cluster.this, aws_autoscaling_group.nodes]
-}
+#   depends_on = [aws_eks_cluster.this, aws_autoscaling_group.nodes]
+# }
 
