@@ -1,5 +1,5 @@
 
-resource "aws_security_group" "poc" {
+resource "aws_security_group" "poc-1" {
   name = "dynamic_block_poc"
   vpc_id =  data.terraform_remote_state.vpc.outputs.vpc_id
   description = "Additional security group with dynamic blocks"

@@ -4,7 +4,7 @@ resource "aws_launch_template" "nodes" {
   instance_type = var.instance_type
   image_id      = data.aws_ssm_parameter.eks_ami.value
 
-  # vpc_security_group_ids = [aws_security_group.poc[*].id]
+  vpc_security_group_ids = [aws_security_group.poc-1[*].id]
 
   user_data = base64encode(<<-EOF
     MIME-Version: 1.0
@@ -51,4 +51,6 @@ resource "aws_launch_template" "nodes" {
     tags = merge(var.tags, { Name = "${var.cluster_name}-node-volume", VPC = var.vpc_id })
   }
 }
+
+
 
