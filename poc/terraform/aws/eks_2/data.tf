@@ -33,6 +33,6 @@ data "terraform_remote_state" "vpc" {
   backend = "local"
 
   config = {
-    path = "/home/adiezon/scripts/poc/terraform/aws/vpc/terraform.tfstate"
+    path = "//home/adiezon/scripts/platform-devops/poc/terraform/aws/vpc/terraform.tfstate"
   }
 }

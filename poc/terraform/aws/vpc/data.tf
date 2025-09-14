@@ -25,11 +25,11 @@ data "aws_security_group" "default" {
 }
 
 # data "aws_network_interface" "alb_eni" {
-#   count = length(module.vpc.private_subnets)
+#   # count = length(module.vpc.private_subnets)
 
 #   filter {
 #     name   = "subnet-id"
-#     values = [module.vpc.private_subnets[count.index]]
+#     values = module.vpc.private_subnets
 #   }
 
 #   filter {
@@ -37,4 +37,10 @@ data "aws_security_group" "default" {
 #     values = [data.aws_security_group.default.id]
 #   }
 # }
+
+# data "aws_network_interface" "alb_eni_details" {
+#   for_each = toset(data.aws_network_interfaces.alb_eni.ids)
+#   id       = each.value
+# }
+
 
