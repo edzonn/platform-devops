@@ -33,6 +33,15 @@ data "terraform_remote_state" "vpc" {
   backend = "local"
 
   config = {
-    path = "//home/adiezon/scripts/platform-devops/poc/terraform/aws/vpc/terraform.tfstate"
+    path = "/home/adiezon/scripts/platform-devops/poc/terraform/aws/vpc/terraform.tfstate"
   }
 }
+
+data "aws_eks_cluster" "eks_cluster" {
+  name = aws_eks_cluster.eks_cluster.name
+}
+
+data "aws_eks_cluster_auth" "eks_cluster" {
+  name = aws_eks_cluster.eks_cluster.name
+}
+

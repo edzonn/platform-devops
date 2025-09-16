@@ -2,7 +2,7 @@ resource "aws_launch_template" "eks_nodes" {
   name                   = "${var.cluster_name}-node-template"
   instance_type          = "t3.medium"
   image_id               = data.aws_ssm_parameter.eks_ami.value
-  vpc_security_group_ids = [aws_eks_cluster.eks_cluster.vpc_config[0].cluster_security_group_id]
+  vpc_security_group_ids = aws_security_group.poc.id != null ? [aws_security_group.poc.id] : [] 
 
 user_data = base64encode(<<-EOF
 MIME-Version: 1.0

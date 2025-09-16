@@ -35,7 +35,7 @@ resource "aws_iam_role" "aws-load-balancer-controller" {
 }
 
 resource "aws_iam_policy" "aws-load-balancer-controller" {
-  policy = file("iam-policy.json")
+  policy = file("${path.module}/policies/iam-ingress.json")
   name   = "AWSLoadBalancerController"
 }
 

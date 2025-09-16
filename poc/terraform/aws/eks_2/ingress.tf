@@ -1,53 +1,70 @@
-# resource "helm_release" "aws-load-balancer-controller" {
-#   name             = "aws-load-balancer-controller"
-#   repository       = "https://aws.github.io/eks-charts"
-#   chart            = "aws-load-balancer-controller"
-#   namespace        = "kube-system"
-#   version          = "1.4.1"
-#   create_namespace = true
 
-#   values = [
-#     file("./ingress.yaml")
-#   ]
-#   set {
-#     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-#     value = aws_iam_role.aws-load-balancer-controller.arn
-#   }
-# }
+resource "helm_release" "aws-load-balancer-controller" {
+  name             = "aws-load-balancer-controller"
+  repository       = "https://aws.github.io/eks-charts"
+  chart            = "aws-load-balancer-controller"
+  namespace        = "kube-system"
+  version          = "1.8.1"
+  create_namespace = false
+
+  values = [
+    yamlencode({
+      clusterName = var.cluster_name
+      region      = var.region
+      vpcId       = data.terraform_remote_state.vpc.outputs.vpc_id
+      serviceAccount = {
+        create = true
+        name   = "aws-load-balancer-controller"
+        annotations = {
+          "eks.amazonaws.com/role-arn" = aws_iam_role.eks_node_role.arn
+        }
+      }
+    }),
+    file("./manifest/ingress.yaml")
+  ]
+
+  depends_on = [aws_eks_cluster.eks_cluster]
+}
 
 # resource "helm_release" "aws_ebs_csi_driver" {
 #   name       = "aws-ebs-csi-driver"
 #   namespace  = "kube-system"
 #   repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver"
 #   chart      = "aws-ebs-csi-driver"
-#   version    = "2.30.0" 
+#   version    = "2.32.0"
 
 #   values = [
 #     yamlencode({
+#       controller = {
+#         serviceAccount = {
+#           create = true
+#           name   = "ebs-csi-controller-sa"
+#           annotations = {
+#             "eks.amazonaws.com/role-arn" = aws_iam_role.eks_node_role.arn
+#           }
+#         }
+#         enableVolumeScheduling = true
+#         enableVolumeResizing   = true
+#         enableVolumeSnapshot   = true
+#       }
 #       storageClasses = [
 #         {
-#           name              = "local-agent-key"
-#           volumeBindingMode = "WaitForFirstConsumer"
-#           provisioner       = "ebs.csi.aws.com"
+#           name                = "ebs-sc"
+#           annotations = {
+#             "storageclass.kubernetes.io/is-default-class" = "true"
+#           }
+#           volumeBindingMode   = "WaitForFirstConsumer"
+#           provisioner         = "ebs.csi.aws.com"
+#           parameters = {
+#             type      = "gp3"
+#             encrypted = "true"
+#           }
+#           allowVolumeExpansion = true
+#           reclaimPolicy       = "Delete"
 #         }
 #       ]
 #     })
 #   ]
 
-#   set {
-#     name  = "enableVolumeScheduling"
-#     value = "true"
-#   }
-
-#   set {
-#     name  = "enableVolumeResizing"
-#     value = "true"
-#   }
-
-#   set {
-#     name  = "enableVolumeSnapshot"
-#     value = "true"
-#   }
-
-#     depends_on = [aws_eks_cluster.eks_cluster]
+#   depends_on = [aws_eks_cluster.eks_cluster]
 # }

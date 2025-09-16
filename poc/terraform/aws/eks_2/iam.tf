@@ -15,7 +15,6 @@ resource "aws_iam_role" "eks_cluster_role" {
   })
 }
 
-
 resource "aws_iam_role_policy_attachment" "eks_worker_node_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
   role       = aws_iam_role.eks_node_role.name
@@ -31,6 +30,10 @@ resource "aws_iam_role_policy_attachment" "eks_container_registry_policy" {
   role       = aws_iam_role.eks_node_role.name
 }
 
+resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+  role       = aws_iam_role.eks_cluster_role.name
+}
 
 resource "aws_iam_instance_profile" "eks_node_instance_profile" {
   name = "${var.cluster_name}-node-instance-profile"
@@ -59,32 +62,23 @@ resource "aws_iam_role" "eks_node_role" {
 resource "aws_iam_policy" "ebs_csi_policy" {
   name        = "${var.cluster_name}-ebs-csi-policy"
   description = "EBS CSI policy for EKS nodes"
-
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "ec2:AttachVolume",
-          "ec2:CreateSnapshot",
-          "ec2:CreateTags",
-          "ec2:DeleteSnapshot",
-          "ec2:DescribeInstances",
-          "ec2:DescribeSnapshots",
-          "ec2:DescribeVolumes",
-          "ec2:DetachVolume",
-          "ec2:ModifyVolume",
-          "ec2:CreateVolume",
-          "ec2:DeleteVolume",
-        ]
-        Resource = "*"
-      }
-    ]
-  })
+  policy = file("${path.module}/policies/iam-ebs.json")
 }
 
 resource "aws_iam_role_policy_attachment" "ebs_csi_policy_attachment" {
   role       = aws_iam_role.eks_node_role.name
   policy_arn = aws_iam_policy.ebs_csi_policy.arn
+}
+
+# create iam policy for ingress controller
+
+resource "aws_iam_policy" "ingress_controller" {
+  name        = "ingress-controller-policy"
+  description = "IAM policy for EKS ingress controller"
+  policy      = file("${path.module}/policies/iam-ingress.json")
+}
+
+resource "aws_iam_role_policy_attachment" "ingress_controller_attachment" {
+  role       = aws_iam_role.eks_node_role.name
+  policy_arn = aws_iam_policy.ingress_controller.arn
 }
