@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: rancher-ingress
+  namespace: cattle-system
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing   # or internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/success-code: '200-399'
+    alb.ingress.kubernetes.io/subnets: subnet-09dacce697af59dba,subnet-08900701ac993cf0a
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-southeast-1:739089952409:certificate/809f2e74-dd72-48b2-9d18-73c023b463a3
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rancher
+                port:
+                  number: 80
