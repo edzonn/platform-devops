@@ -21,29 +21,29 @@ module "vpc" {
   }
 }
 
-module "endpoints" {
-  source          = "../../../terraform-modules/aws/vpc_endpoints"
-  name            = "poc"
-  region          = var.region
-  vpc_id          = module.vpc.vpc_id
-  subnet_ids      = module.vpc.private_subnets
-  endpoint_sg_ids = [aws_security_group.vpc_endpoints.id]
+# module "endpoints" {
+#   source          = "../../../terraform-modules/aws/vpc_endpoints"
+#   name            = "poc"
+#   region          = var.region
+#   vpc_id          = module.vpc.vpc_id
+#   subnet_ids      = module.vpc.private_subnets
+#   endpoint_sg_ids = [aws_security_group.vpc_endpoints.id]
 
-  # You can override defaults if needed
-  interface_endpoints = {
-    "ecr.api" = "ECR API"
-    "ecr.dkr" = "ECR Docker"
-    "ecs"     = "ECS"
-    "eks"     = "EKS"
-  }
-  gateway_endpoints = {
-    "s3" = "S3"
-  }
+#   # You can override defaults if needed
+#   interface_endpoints = {
+#     "ecr.api" = "ECR API"
+#     "ecr.dkr" = "ECR Docker"
+#     "ecs"     = "ECS"
+#     "eks"     = "EKS"
+#   }
+#   gateway_endpoints = {
+#     "s3" = "S3"
+#   }
 
-  route_table_ids = module.vpc.private_route_table_ids
+#   route_table_ids = module.vpc.private_route_table_ids
 
-  tags = {
-    Environment = "poc"
-  }
-  depends_on = [module.vpc]
-}
+#   tags = {
+#     Environment = "poc"
+#   }
+#   depends_on = [module.vpc]
+# }
